@@ -60,15 +60,21 @@ and return the orbital parameters at the specified times based on the `dense_out
 `solve_ivp`. If the system merges before reaching `t_max`, orbital values with times
 after the merger time will return `np.nan`.
 
-available commands:
-- integrate()
-- solution
-- time_array_yr
-- separation_array_AU
-- eccentricity_array
-- merger_time_yr (if reached)
+### Available Methods and Properties
 
+Once you've created and integrated a `GWintegrator` object, you can access the following methods and properties:
 
+**`integrate()`** — Computes the orbital evolution of the binary system from the initial conditions until merger.
+
+**`solution`** — The raw solution object returned by `scipy.integrate.solve_ivp`. Contains all interpolation data and can be called like a function to retrieve `(tau, l)` at specified $s$ values.
+
+**`time_array_yr`** — Returns a NumPy array of time values (in years) where the solution was evaluated.
+
+**`separation_array_AU`** — Returns a NumPy array of semi-major axis values (in AU) corresponding to the time array.
+
+**`eccentricity_array`** — Returns a NumPy array of eccentricity values corresponding to the time array.
+
+**`merger_time_yr`** — Returns the time (in years) at which the merger occurs. Only available after calling `integrate()` or having called the integrator. If the system has not yet merged within the integration time, this will raise an error.
 
 
 ## Benchmarks
