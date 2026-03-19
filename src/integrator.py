@@ -117,15 +117,25 @@ class GWIntegrator:
         """
         t_max = t_max * SEC_PER_YEAR if t_max is not None else None
         
-        # Stop evolution
+        # Stop evolution based on max time
         def final_time_event(s, y):
-            """Event function: triggers when tau reaches t_max / t0."""
+            """Event function: triggers when tau reaches t_max / t0.
+            Calculated in seconds
+            
+            Parameters
+            ----------
+            s : float
+                Independent variable  s = -ln(alpha).
+            y : array_like
+                [tau, l]
+            """
             tau = y[0]
             return tau - (t_max / self.t0) if t_max is not None else -1.0
         
         final_time_event.terminal = True
         final_time_event.direction = 0
         
+        # Set l to a machine small value if given e0==0
         l0 = np.log(self.e0) if self.e0 > 0 else np.log(np.finfo(float).tiny)
         y0 = [0.0, l0]
         
@@ -145,6 +155,13 @@ class GWIntegrator:
 
         return sol
     
+    ### Main output variables
+    
+    @property
+    def solution(self):
+        """The most recent ``solve_ivp`` result"""
+        return self._solution
+    
     @property
     def time_array_yr(self):
         """Get the time array in years."""
@@ -162,7 +179,10 @@ class GWIntegrator:
         """Return e(s) = exp(l(s))."""
         self._check_solved()
         return np.exp(self._solution.y[1])
-        
+    
+    
+    # Internal output variables
+    
     def get_alpha(self):
         """Return alpha(s) = exp(-s), the dimensionless semi-major axis."""
         self._check_solved()
@@ -181,7 +201,6 @@ class GWIntegrator:
         return self._solution.y[0, -1] * self.t0 / SEC_PER_YEAR
     
     # Helper functions
-    
     def _check_solved(self):
         if self._solution is None:
             raise RuntimeError("Call integrate() first.")
@@ -192,4 +211,10 @@ class GWIntegrator:
         if self._solution.status != 0:
             raise RuntimeError('Merger not found.')
             
-        
+            
+    def __repr__(self):
+        return (f"GWIntegrator"
+                f"    m1={self.m1_solar} M☉"
+                f"    m2={self.m2_solar} M☉"
+                f"    a0={self.a0_au} AU"
+                f"    e0={self.e0}")
