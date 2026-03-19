@@ -87,7 +87,7 @@ Additional methods are available to retrieve the solutions in other parameter sp
 Analytical solution to integration of Peters' equations:
 
 $$
-T_{m} = \frac{}
+T_{m} = \frac{}{}
 $$
 
 We can use this analytical solution to benchmark the ODE integrator.
