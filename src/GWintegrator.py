@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.constants import G, c
 from scipy.integrate import solve_ivp
+from scipy.optimize import brentq
 
 # ---------- physical constants in SI ----------
 M_SUN = 1.989e30   # solar mass [kg]
@@ -91,6 +92,68 @@ class GWIntegrator:
         return [dtau_ds, dl_ds]
 
 
+    def __call__(self, t, s_max=1e3, rtol=1e-12, atol=1e-12,
+                  max_step=np.inf):
+        """Return the orbital configuration at one or more times.
+
+        Integrates the systems of ODEs for the maximum in the given t array.
+        It then uses the `dense_output` from `solve_ivp` to request the other t values.
+        To this ends, it inverts the s->tau relationship using scipy.brentq.
+
+        For time values beyond the merger time of the system, np.nan is returned.
+
+        Parameters
+        ----------
+        t : float or array_like of float
+            Times (in years) at which to evaluate the orbit.
+        s_max : float, optional
+            Maximum s = -ln(alpha) to integrate to (default: 1000).
+            This is a safeguard against infinite integration if t_max is None.
+        rtol, atol : float
+            Relative / absolute tolerances passed to ``solve_ivp``.
+        max_step : float
+            Maximum internal step size in seconds.
+
+        Returns
+        -------
+        a : np.ndarray
+            Semi-major axis in AU at each requested time.
+        e : np.ndarray
+            Eccentricity at each requested time.
+        """
+        t = np.atleast_1d(np.asarray(t, dtype=float))
+
+        sol = self.integrate(t_max=float(np.max(t)), s_max=s_max,
+                             rtol=rtol, atol=atol, max_step=max_step,
+                             dense_output=True)
+
+        # check if s_max reached instead of t_max
+        if sol.status == 0:
+            print("Merger conditions have been reached")
+            print("Some t values might not return a value")
+
+        # Compare merger_time against t array
+        mask = t <= self.merger_time_yr
+        masked_t = t[mask]
+
+        s_lo, s_hi = sol.t[0], sol.t[-1]
+
+        out_a = np.empty(len(t))
+        out_e = np.empty(len(t))
+        for i, ti in enumerate(masked_t):
+            tau_target = ti * SEC_PER_YEAR / self.t0
+            # tau(s) is monotone -> brentq converges
+            # inverting s -> tau relationship
+            s_star = brentq(lambda s: sol.sol(s)[0] - tau_target, s_lo, s_hi,
+                            xtol=1e-14, rtol=1e-14)
+            out_a[i] = np.exp(-s_star) * self.a0 / AU
+            out_e[i] = np.exp(sol.sol(s_star)[1])
+
+        out_a[~mask] = np.nan
+        out_e[~mask] = np.nan
+
+        return out_a, out_e
+
     def integrate(self, t_max=None, s_max=1e3, rtol=1e-12, atol=1e-12,
                   max_step=np.inf, dense_output=True):
         """Integrate Peters' equations until merger or t_max.
@@ -115,7 +178,7 @@ class GWIntegrator:
         sol : OdeResult
             The ``scipy.integrate.solve_ivp`` result object.
         """
-        t_max = t_max * SEC_PER_YEAR if t_max is not None else None
+        self.t_max = t_max * SEC_PER_YEAR if t_max is not None else None
 
         # Stop evolution based on max time
         def final_time_event(s, y):
@@ -130,7 +193,7 @@ class GWIntegrator:
                 [tau, l]
             """
             tau = y[0]
-            return tau - (t_max / self.t0) if t_max is not None else -1.0
+            return tau - (self.t_max / self.t0) if self.t_max is not None else -1.0
 
         final_time_event.terminal = True
         final_time_event.direction = 0
@@ -172,7 +235,7 @@ class GWIntegrator:
     def separation_array_AU(self):
         """Return a(s) = alpha * a0 the semi-major axis in AU."""
         self._check_solved()
-        return self.get_alpha() * self.a0
+        return self.get_alpha() * self.a0 / AU
 
     @property
     def eccentricity_array(self):
