@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-py-modules = ["integrator"]
+py-modules = ["GWintegrator"]
 
 [tool.setuptools.package-dir]
 "" = "src"
