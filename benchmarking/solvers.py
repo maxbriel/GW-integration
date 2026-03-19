@@ -158,3 +158,19 @@ class PetersGW():
     @property
     def merger_time_yr(self):
         return self._solution.t[-1] / SEC_PER_YEAR
+
+
+    @property
+    def time_array_yr(self):
+        """Get the time array in years."""
+        return self._solution.t / SEC_PER_YEAR
+
+    @property
+    def separation_array_AU(self):
+        """return separtaion array in AU"""
+        return self._solution.y[0] / AU
+
+    @property
+    def eccentricity_array(self):
+        """return eccentricity array"""
+        return self._solution.y[1]

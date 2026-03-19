@@ -180,3 +180,32 @@ print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
 print("#"*80)
+
+
+# Make a figure of an example systems approaching the merger time
+
+t = np.linspace(0,1e9,10000000)
+m10 = 1e4  # Msun
+m20 = 1e7  # Msun
+a0 = 1 # AU
+e = 0.9
+print("m1, m2, a0, e0")
+print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
+
+t_merger = peters_merger_time(m10, m20, a0, e)
+
+integrator = GWIntegrator(m10, m20, a0, e)
+integrator.integrate()
+
+
+integrator2 = PetersGW(m10, m20, a0, e)
+integrator2.integrate()
+
+plt.figure()
+plt.axvline(t_merger, color='black')
+plt.plot(integrator2.time_array_yr, integrator2.separation_array_AU, label='old')
+plt.plot(integrator.time_array_yr, integrator.separation_array_AU, label='new', ls='--')
+plt.xlim(0.001, None)
+plt.yscale('log')
+plt.xlabel('time')
+plt.show()
