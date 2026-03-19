@@ -14,8 +14,8 @@ def _g(e2):
     return 1.0 + (73.0 / 24.0) * e2 + (37.0 / 96.0) * e2 * e2
 
 
-def _h(e2):
-    """h(e) = 1 + (121/304) e^2"""
+def _f(e2):
+    """f(e) = 1 + (121/304) e^2"""
     return 1.0 + (121.0 / 304.0) * e2
 
 
@@ -78,15 +78,15 @@ class GWIntegrator:
         e = np.exp(l)
         e2 = e * e
         
-        if e2 >= 1.0:   # guard against e >= 1 (shouldn't occur for e0 < 1)
+        if e2 >= 1.0:   # guard against e >= 1
             return [0.0, 0.0]
+        
         one_minus_e2 = 1.0 - e2
+        G = _g(e2)
+        F = _f(e2)
         
-        g = _g(e2)
-        h = _h(e2)
-        
-        dtau_ds = 4.0 * np.exp(-4.0 * s) * one_minus_e2**3.5 / g
-        dl_ds = -(19.0 / 12.0) * one_minus_e2 * h / g
+        dtau_ds = 4.0 * np.exp(-4.0 * s) * one_minus_e2**3.5 / G
+        dl_ds = -(19.0 / 12.0) * one_minus_e2 * F / G
         
         return [dtau_ds, dl_ds]
     
@@ -117,6 +117,7 @@ class GWIntegrator:
         """
         t_max = t_max * SEC_PER_YEAR if t_max is not None else None
         
+        # Stop evolution
         def final_time_event(s, y):
             """Event function: triggers when tau reaches t_max / t0."""
             tau = y[0]
@@ -145,13 +146,50 @@ class GWIntegrator:
         return sol
     
     @property
-    def time_years(self):
+    def time_array_yr(self):
         """Get the time array in years."""
         self._check_solved()
         return self._solution.y[0] * self.t0 / SEC_PER_YEAR    
+    
+    @property
+    def separation_array_AU(self):
+        """Return a(s) = alpha * a0 the semi-major axis in AU."""
+        self._check_solved()
+        return self.get_alpha() * self.a0
+    
+    @property
+    def eccentricity_array(self):
+        """Return e(s) = exp(l(s))."""
+        self._check_solved()
+        return np.exp(self._solution.y[1])
+        
+    def get_alpha(self):
+        """Return alpha(s) = exp(-s), the dimensionless semi-major axis."""
+        self._check_solved()
+        return np.exp(-self.get_s())
+
+    def get_s(self):
+        """Return the array of s values"""
+        self._check_solved()
+        return self._solution.t
+    
+    @property
+    def merger_time_yr(self):
+        """Get the merger time in years."""
+        self._check_solved()
+        self._check_merger()
+        return self._solution.y[0, -1] * self.t0 / SEC_PER_YEAR
     
     # Helper functions
     
     def _check_solved(self):
         if self._solution is None:
             raise RuntimeError("Call integrate() first.")
+        
+    # Check merger
+    def _check_merger(self):
+        # sol status = 0 means the end of the integrtaion interval was reached.
+        if self._solution.status != 0:
+            raise RuntimeError('Merger not found.')
+            
+        
