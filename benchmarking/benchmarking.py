@@ -95,7 +95,7 @@ print("#"*80)
 
 
 # ----------
-# Example 3
+# Example 4
 # ----------
 m10 = 3  # Msun
 m20 = 1e7  # Msun
@@ -123,13 +123,42 @@ print('new:', integrator._solution.message)
 print("#"*80)
 
 
-
 # ----------
-# Example 3
+# Example 5
 # ----------
 m10 = 1e4  # Msun
 m20 = 1e7  # Msun
 a0 = 1 # AU
+e = 0.9
+print("m1, m2, a0, e0")
+print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
+
+t_merger = peters_merger_time(m10, m20, a0, e)
+
+integrator = GWIntegrator(m10, m20, a0, e)
+integrator.integrate()
+
+
+integrator2 = PetersGW(m10, m20, a0, e)
+integrator2.integrate()
+print("Merger time")
+print('analytical', t_merger)
+print('old       ', integrator2.merger_time_yr)
+print('new       ', integrator.merger_time_yr)
+
+print('Solver messages:')
+print('old:', integrator2._solution.message)
+print('new:', integrator._solution.message)
+print("#"*80)
+
+
+
+# ----------
+# Example 6
+# ----------
+m10 = 0.3  # Msun
+m20 = 0.5  # Msun
+a0 = 1e-4 # AU
 e = 0.9
 print("m1, m2, a0, e0")
 print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
