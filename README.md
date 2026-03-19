@@ -76,6 +76,7 @@ Once you've created and integrated a `GWintegrator` object, you can access the f
 
 **`merger_time_yr`** — Returns the time (in years) at which the merger occurs. Only available after calling `integrate()` or having called the integrator. If the system has not yet merged within the integration time, this will raise an error.
 
+Additional methods are available to retrieve the solutions in other parameter spaces, i.e. $\alpha$ space.
 
 ## Benchmarks
 
