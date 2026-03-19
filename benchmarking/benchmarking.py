@@ -14,6 +14,8 @@ m10 = 30  # Msun
 m20 = 10  # Msun
 a0 = 0.05 # AU
 e = 0
+print("m1, m2, a0, e0")
+print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 
 t_merger = peters_merger_time(m10, m20, a0, e)
 
@@ -42,6 +44,8 @@ m10 = 30  # Msun
 m20 = 10  # Msun
 a0 = 0.01 # AU
 e = 0.5
+print("m1, m2, a0, e0")
+print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 
 t_merger = peters_merger_time(m10, m20, a0, e)
 
@@ -72,6 +76,8 @@ m10 = 30  # Msun
 m20 = 1e4  # Msun
 a0 = 0.01 # AU
 e = 0.9
+print("m1, m2, a0, e0")
+print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 
 t_merger = peters_merger_time(m10, m20, a0, e)
 
