@@ -2,7 +2,9 @@
 
 ## Introduction
 
-GWintegrator is a Python package for computing the orbital evolution of gravitationally bound binary systems approaching merger. It transforms the orbital equations based on [Peters (1964)](https://link.aps.org/doi/10.1103/PhysRev.136.B1224) to achieve more stable numerical integration. Unlike other methods that focus solely on merger time, GWintegrator provides the orbital evolution—allowing you to determine the orbital configuration (semi-major axis and eccentricity) at any time before merger.
+GWintegrator is a Python package for computing the orbital evolution of gravitationally bound binary systems approaching merger.
+It transforms the orbital equations based on [Peters (1964)](https://link.aps.org/doi/10.1103/PhysRev.136.B1224) to achieve more stable numerical integration.
+Unlike other methods that focus solely on merger time, GWintegrator provides the orbital evolution—allowing you to determine the orbital configuration (semi-major axis and eccentricity) at any time before merger.
 
 ## Installation instructions
 
@@ -11,28 +13,52 @@ GWintegrator is a Python package for computing the orbital evolution of gravitat
 
 ## How to use
 
-## general case
-import
-```from GWintegrator import GWintegrator```
+### General case
 
-setup
+**Step 1: Import the integrator**
+
+```python
+from GWintegrator import GWintegrator
 ```
-m10 = 100  # Msun
-m20 = 100  # Msun
-a0 = 0.01  # AU
-e0 = 0.43
-integrator = GWintegrator(m1, m2, a, e)
+
+**Step 2: Define your binary system parameters**
+
+Specify the masses of both objects (in solar masses), the initial semi-major
+axis (in AU), and the initial eccentricity:
+
+```python
+m1 = 100  # Primary mass in Msun
+m2 = 100  # Secondary mass in Msun
+a0 = 0.01  # Initial semi-major axis in AU
+e0 = 0.43  # Initial eccentricity (between 0 and 1)
+```
+
+**Step 3: Create an integrator instance and compute the orbital evolution**
+
+Initialize the `GWintegrator` object with your parameters and call
+the `integrate()` method to compute the complete orbital evolution until merger:
+
+```python
+integrator = GWintegrator(m1, m2, a0, e0)
 integrator.integrate()
 
+# Get the merger time
 print(integrator.merger_time)
 ```
 
+**Step 4: Query orbital parameters at specific times**
 
-getting values at different t:
-```
-t = [1e3, 1e4, 1e5, 1e7]
+You can retrieve the semi-major axis and eccentricity at any time before merger
+by calling the integrator with an array of times (in years):
+
+```python
+t = [1e3, 1e4, 1e5, 1e7]  # Times in years
 a, e = integrator(t)
 ```
+This will run the integration using the maximum time (`t_max`) in the array (1e7 years in the example)
+and return the orbital parameters at the specified times based on the `dense_output` from
+`solve_ivp`. If the system merges before reaching `t_max`, orbital values with times
+after the merger time will return `np.nan`.
 
 available commands:
 - integrate()
@@ -45,11 +71,11 @@ available commands:
 
 
 
-# Benchmarks
+## Benchmarks
 
 - Peters merger time calculation
 
-## Circular orbits
+### Circular orbits
 
 Analytical solution to integration of Peters' equations:
 
@@ -67,7 +93,7 @@ a0 = 0.05 # AU
 e = 0
 ```
 
-## Eccentric orbits
+### Eccentric orbits
 
 For eccentric orbits we need to solve the integral given by Peters:
 
@@ -90,6 +116,6 @@ e = 0.9999
 
 
 
-# Caveats
+## Caveats
 
 - Cannot handle e=0, instead a small offset (machine precision offset) is added.
