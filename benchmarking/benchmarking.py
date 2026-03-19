@@ -190,7 +190,7 @@ print("#"*80)
 
 # Make a figure of an example systems approaching the merger time
 
-t = np.linspace(0,1e9,10000000)
+t = np.linspace(0,1e9,1000000000)
 m10 = 1e4  # Msun
 m20 = 1e7  # Msun
 a0 = 1 # AU
@@ -208,10 +208,15 @@ integrator2 = PetersGW(m10, m20, a0, e)
 integrator2.integrate()
 
 plt.figure()
-plt.axvline(t_merger, color='black')
-plt.plot(integrator2.time_array_yr, integrator2.separation_array_AU, label='old')
-plt.plot(integrator.time_array_yr, integrator.separation_array_AU, label='new', ls='--')
-plt.xlim(0.001, None)
+#plt.axvline(t_merger, color='black')
+plt.plot(integrator2.time_array_yr[-1] - integrator2.time_array_yr, integrator2.separation_array_AU, label='old', ls='-',)
+plt.plot(integrator.time_array_yr[-1] - integrator.time_array_yr, integrator.separation_array_AU, label='new', ls='--')
+#plt.xlim(0.001, None)
+plt.xscale('log')
+plt.ylim(1e-6, 1e1)
+plt.xlim(1e-18, 1e1)
 plt.yscale('log')
-plt.xlabel('time')
+plt.xlabel('time till final value [yr]')
+plt.ylabel('separation [AU]')
+plt.legend()
 plt.show()
