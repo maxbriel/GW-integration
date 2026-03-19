@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gw-integrator"
+version = "0.1.0"
+description = """
+Gravitaional wave driven orbital evolution integrator based on tranformed
+equations from Peters (1964)."""
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[tool.setuptools]
+py-modules = ["integrator"]
+
+[tool.setuptools.package-dir]
+"" = "src"
