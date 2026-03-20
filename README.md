@@ -4,7 +4,31 @@
 
 GWintegrator is a Python package for computing the orbital evolution of gravitationally bound binary systems approaching merger.
 It transforms the orbital equations based on [Peters (1964)](https://link.aps.org/doi/10.1103/PhysRev.136.B1224) to achieve more stable numerical integration.
-Unlike other methods that focus solely on merger time, GWintegrator provides the orbital evolution—allowing you to determine the orbital configuration (semi-major axis and eccentricity) at any time before merger.
+Unlike other methods that focus solely on merger time, GWintegrator provides the orbital evolution—allowing you to determine the orbital configuration (semi-major axis and eccentricity) at any time before merger. These equations are based on the work in the research note.
+
+## Equations
+
+Given the initial conditions for separation ($a_0$) and eccentricity ($e_0$), the orbital evolution is computed using the following equations:
+
+$$\frac{d\tau}{ds} = \exp(-4s) \frac{(1-e^2)^{7/2}}{G(e)}$$
+
+$$\frac{dl}{ds} = -\frac{19}{12} \left(1-e^2\right)\frac{F(e)}{G(e)},$$
+where $s$ is the independent variable defined as $s = \ln(a/a_0)$, $l=\ln(e)$, and $\tau = t/t_0$.
+We define $t_0$ as:
+$$t_0=\frac{5}{64}\frac{c^5a_0^4}{G^3(m_1+m_2)m_1m_2},$$
+where $c$ is the speed of light, $G$ the gravitational constant, and $m_1$ and $m_2$ the respective masses of the compact objects.
+
+For convenience, we have set:
+
+$$
+G(e)=1+ \frac{73}{24}e^2 + \frac{37}{96}e^4,
+$$
+
+and
+$$
+F(e)=1+ \frac{121}{304}e^2
+$$
+
 
 ## Installation instructions
 
@@ -77,6 +101,8 @@ Once you've created and integrated a `GWintegrator` object, you can access the f
 **`merger_time_yr`** — Returns the time (in years) at which the merger occurs. Only available after calling `integrate()` or having called the integrator. If the system has not yet merged within the integration time, this will raise an error.
 
 Additional methods are available to retrieve the solutions in other parameter spaces, i.e. $\alpha$ space.
+
+
 
 ## Benchmarks
 
