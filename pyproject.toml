@@ -5,9 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gw-integrator"
 version = "0.1.0"
+authors = [
+    {name = "Max Briel", email = "max.briel@unige.ch"}
+]
 description = """
 Gravitaional wave driven orbital evolution integrator based on tranformed
 equations from Peters (1964)."""
+readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.9"
 dependencies = [
     "numpy",
