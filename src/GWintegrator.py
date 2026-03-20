@@ -53,7 +53,7 @@ class GWIntegrator:
 
         # Characteristic timescale
         # circular merger time
-        self.t0 = self.a0**4 / (4.0 * self.beta)
+        self.t0 = self.a0**4 / (self.beta)
         self._solution = None
 
     @staticmethod
@@ -86,7 +86,7 @@ class GWIntegrator:
         G = _g(e2)
         F = _f(e2)
 
-        dtau_ds = 4.0 * np.exp(-4.0 * s) * one_minus_e2**3.5 / G
+        dtau_ds = np.exp(-4.0 * s) * one_minus_e2**3.5 / G
         dl_ds = -(19.0 / 12.0) * one_minus_e2 * F / G
 
         return [dtau_ds, dl_ds]
