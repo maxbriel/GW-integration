@@ -20,21 +20,26 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
 
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
 print('new       ', integrator.merger_time_yr)
 
-
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
 
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
 
 # ----------
@@ -50,11 +55,13 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
-
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
+
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
@@ -64,6 +71,11 @@ print('new       ', integrator.merger_time_yr)
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
+
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
 
 
@@ -82,11 +94,14 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
-
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
+
+
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
@@ -95,6 +110,11 @@ print('new       ', integrator.merger_time_yr)
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
+
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
 
 
@@ -113,11 +133,13 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
-
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
+
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
@@ -126,6 +148,11 @@ print('new       ', integrator.merger_time_yr)
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
+
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
 
 
@@ -142,11 +169,13 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
-
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
+
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
@@ -155,6 +184,11 @@ print('new       ', integrator.merger_time_yr)
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
+
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
 
 
@@ -172,11 +206,13 @@ print(f'{m10:.2e}, {m20:.2e}, {a0:.2e}, {e:.2f}')
 t_merger = peters_merger_time(m10, m20, a0, e)
 
 integrator = GWIntegrator(m10, m20, a0, e)
-integrator.integrate()
-
+sol_new = integrator.integrate()
+nfev_new = sol_new.nfev
 
 integrator2 = PetersGW(m10, m20, a0, e)
-integrator2.integrate()
+sol_old = integrator2.integrate()
+nfev_old = sol_old.nfev
+
 print("Merger time")
 print('analytical', t_merger)
 print('old       ', integrator2.merger_time_yr)
@@ -185,7 +221,13 @@ print('new       ', integrator.merger_time_yr)
 print('Solver messages:')
 print('old:', integrator2._solution.message)
 print('new:', integrator._solution.message)
+
+print("Function evaluations")
+print('old       ', nfev_old)
+print('new       ', nfev_new)
+print('ratio     ', nfev_new/nfev_old)
 print("#"*80)
+
 
 
 # Make a figure of an example systems approaching the merger time
@@ -206,6 +248,7 @@ integrator.integrate()
 
 integrator2 = PetersGW(m10, m20, a0, e)
 integrator2.integrate()
+
 
 plt.figure()
 #plt.axvline(t_merger, color='black')
