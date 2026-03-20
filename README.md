@@ -32,8 +32,17 @@ $$
 
 ## Installation instructions
 
-- via pip
-- via github
+**Via pip:**
+
+```bash
+pip install gw-integrator
+```
+
+**Via GitHub:**
+
+```bash
+pip install git+https://github.com/maxbriel/GW-integration.git
+```
 
 ## How to use
 
