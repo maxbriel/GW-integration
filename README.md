@@ -16,7 +16,9 @@ $$\frac{dl}{ds} = -\frac{19}{12} \left(1-e^2\right)\frac{F(e)}{G(e)},$$
 
 where $s$ is the independent variable defined as $s = \ln(a/a_0)$, $l=\ln(e)$, and $\tau = t/t_0$.
 We define $t_0$ as:
+
 $$t_0=\frac{5}{64}\frac{c^5a_0^4}{G^3(m_1+m_2)m_1m_2},$$
+
 where $c$ is the speed of light, $G$ the gravitational constant, and $m_1$ and $m_2$ the respective masses of the compact objects.
 
 For convenience, we have set:
