@@ -260,7 +260,7 @@ class GWIntegrator:
     def merger_time_yr(self):
         """Get the merger time in years."""
         self._check_solved()
-        self._check_merger()
+        # self._check_merger()
         return self._solution.y[0, -1] * self.t0 / SEC_PER_YEAR
 
     # Helper functions
