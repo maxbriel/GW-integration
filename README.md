@@ -80,7 +80,7 @@ integrator = GWIntegrator(m1, m2, a0, e0)
 integrator.integrate()
 
 # Get the merger time
-print(integrator.merger_time)
+print(integrator.merger_time_yr)
 ```
 
 **Step 4: Query orbital parameters at specific times**
