@@ -55,7 +55,7 @@ pip install git+https://github.com/maxbriel/GW-integration.git
 **Step 1: Import the integrator**
 
 ```python
-from GWintegrator import GWintegrator
+from GWintegrator import GWIntegrator
 ```
 
 **Step 2: Define your binary system parameters**
@@ -72,15 +72,15 @@ e0 = 0.43  # Initial eccentricity (between 0 and 1)
 
 **Step 3: Create an integrator instance and compute the orbital evolution**
 
-Initialize the `GWintegrator` object with your parameters and call
+Initialize the `GWIntegrator` object with your parameters and call
 the `integrate()` method to compute the complete orbital evolution until merger:
 
 ```python
-integrator = GWintegrator(m1, m2, a0, e0)
+integrator = GWIntegrator(m1, m2, a0, e0)
 integrator.integrate()
 
 # Get the merger time
-print(integrator.merger_time)
+print(integrator.merger_time_yr)
 ```
 
 **Step 4: Query orbital parameters at specific times**
